@@ -4,8 +4,11 @@
 #include <avr/interrupt.h>
 
 void setupInterrupt(){
+  //Enable INT1
   EIMSK |= _BV(INT1);
+  //Set any logic change to trigger interrupt
   EICRA |= _BV(ISC10);
+  //Enable Global Interrup Register
   sei();
 }
 
