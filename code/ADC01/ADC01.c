@@ -25,6 +25,7 @@ int main(void){
   //Enabling PD6 as PWM output using PWM Phase Correct
   TCCR0A |= _BV(COM0A1) | _BV(WGM00);
   TCCR0A &= ~_BV(COM0A0);
+  //Setting PD6/OCR0A to output
   DDRD |= _BV(PD6);
 
 

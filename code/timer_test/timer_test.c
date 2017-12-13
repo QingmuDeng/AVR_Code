@@ -44,7 +44,6 @@ ISR(TIMER0_OVF_vect){
   timer0_overflow_num++;
   //PORTD ^= _BV(PB7);
   //_delay_ms(10);
-
 }
 
 unsigned long millis(){
@@ -66,10 +65,6 @@ int main(void){
   uint8_t status;
 
   for(;;){
-    //PORTC = 0x1F;
-    //_delay_ms(2000);
-    //PORTC = 0x00;
-    //TCNT1 = 0x00;
     status = PIND;
     time_now = millis();
     if( (!(status & _BV(PD3))) && (time_now - timEr > 100) && (status != previous)){
@@ -77,7 +72,6 @@ int main(void){
       timEr = millis();
     }
     previous = status;
-    //PORTD ^= _BV(PD7);
   }
   return 0;
 }
