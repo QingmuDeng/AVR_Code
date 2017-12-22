@@ -49,7 +49,7 @@ ISR(TIMER0_OVF_vect){
 unsigned long millis(){
   uint8_t oldSREG = SREG;
   cli();
-  uint16_t m = timer0_millis;
+  unsigned long m = timer0_millis;
   SREG = oldSREG;
 
   return m;
