@@ -20,11 +20,11 @@ int main(void){
   //AV CC with external capacitor at AREF pin
   ADMUX |= _BV(REFS0) | _BV(MUX0);
 
-  //Enabling 16-bit Clock with no prescaling
+  //Enabling 8-bit Clock with no prescaling
   TCCR0B |= _BV(CS00);
   //Enabling PD6 as PWM output using PWM Phase Correct
-  TCCR0A |= _BV(COM0A1) | _BV(WGM00);
-  TCCR0A &= ~_BV(COM0A0);
+  TCCR0A |= _BV(COM0A0) | _BV(WGM00);
+  TCCR0A &= ~_BV(COM0A1);
   //Setting PD6/OCR0A to output
   DDRD |= _BV(PD6);
 
@@ -32,7 +32,7 @@ int main(void){
   for(;;){
     ADCSRA |= _BV(ADSC);
 
-    while(ADSC & _BV(ADSC)){
+    while(ADCSRA & _BV(ADSC)){
 
     }
     reading = ADC;
