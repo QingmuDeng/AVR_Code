@@ -11,7 +11,7 @@ ISR(ADC_vect){
   ADCSRA |= _BV(ADSC);
 }
 
-int main(void){
+void init_ADC5(void){
   //Set PB2 to Input
   DDRB &= ~_BV(PB2);
   //Enable ADC and ADC Interrupt
@@ -23,35 +23,34 @@ int main(void){
   ADMUX &= ~_BV(REFS1);
   //Enable AREF Pin
   ADCSRB |= _BV(AREFEN);
+}
 
+void init_PWM1(void){
   //10 bit Phase Correct PWM
   TCCR1A |= _BV(WGM10) | _BV(WGM11);
   TCCR1A |= _BV(COM1A1);
   TCCR1A &= ~_BV(COM1A0);
   DDRD |= _BV(PD2);
-  //64 prescaling
+  //No prescaling
   TCCR1B |= _BV(CS10);
+}
 
-  DDRB |= _BV(PB0) | _BV(PB1);
-  PORTB |= _BV(PB0);
-
+int main(void){
   //Enable Global Interrupt
   sei();
 
+  init_ADC5();
+  init_PWM1();
+
+  //Set PB0 and PB1 to output
+  DDRB |= _BV(PB0) | _BV(PB1);
+  PORTB |= _BV(PB0);
+
   ADCSRA |= _BV(ADSC);
-  //while(ADCSRA & _BV(ADSC)){}
-  //reading = ADC;
 
   for(;;){
     PORTB ^= _BV(PB0);
-    //PORTD |= _BV(PD2);
-    //ADCSRA |= _BV(ADSC);
-    //loop_until_bit_is_clear(ADCSRA, ADSC);
-    //while(bit_is_set(ADCSRA, ADSC));
-    //reading = ADC;
     OCR1A = reading;
-    //OCR1AL = (uint8_t) (0xFF);
-    //OCR1A = 500;
   }
 
   return 0;

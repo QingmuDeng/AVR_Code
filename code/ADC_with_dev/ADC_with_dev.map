@@ -164,7 +164,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000      0x17a
+.text           0x0000000000000000      0x176
  *(.vectors)
  .vectors       0x0000000000000000       0x7c /usr/lib/gcc/avr/4.9.2/../../../avr/lib/avr5/crtatmega16m1.o
                 0x0000000000000000                __vectors
@@ -254,14 +254,20 @@ END GROUP
  .text.__vector_27
                 0x00000000000000a4       0x46 ADC_with_dev.o
                 0x00000000000000a4                __vector_27
+ .text.init_ADC5
+                0x00000000000000ea       0x2e ADC_with_dev.o
+                0x00000000000000ea                init_ADC5
+ .text.init_PWM1
+                0x0000000000000118       0x24 ADC_with_dev.o
+                0x0000000000000118                init_PWM1
  .text.startup.main
-                0x00000000000000ea       0x8c ADC_with_dev.o
-                0x00000000000000ea                main
-                0x0000000000000176                . = ALIGN (0x2)
+                0x000000000000013c       0x36 ADC_with_dev.o
+                0x000000000000013c                main
+                0x0000000000000172                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000000176        0x0 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
-                0x0000000000000176                exit
-                0x0000000000000176                _exit
+ .fini9         0x0000000000000172        0x0 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
+                0x0000000000000172                exit
+                0x0000000000000172                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -280,11 +286,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000000176        0x4 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
+ .fini0         0x0000000000000172        0x4 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x000000000000017a                _etext = .
+                0x0000000000000176                _etext = .
 
-.data           0x0000000000800100        0x0 load address 0x000000000000017a
+.data           0x0000000000800100        0x0 load address 0x0000000000000176
                 0x0000000000800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -303,8 +309,8 @@ END GROUP
  COMMON         0x0000000000800100        0x2 ADC_with_dev.o
                 0x0000000000800100                reading
                 0x0000000000800102                PROVIDE (__bss_end, .)
-                0x000000000000017a                __data_load_start = LOADADDR (.data)
-                0x000000000000017a                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000000000000176                __data_load_start = LOADADDR (.data)
+                0x0000000000000176                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0000000000800102        0x0
                 0x0000000000800102                PROVIDE (__noinit_start, .)
@@ -332,13 +338,13 @@ END GROUP
 .user_signatures
  *(.user_signatures*)
 
-.stab           0x0000000000000000      0x60c
+.stab           0x0000000000000000      0x69c
  *(.stab)
- .stab          0x0000000000000000      0x60c ADC_with_dev.o
+ .stab          0x0000000000000000      0x69c ADC_with_dev.o
 
-.stabstr        0x0000000000000000      0xbf1
+.stabstr        0x0000000000000000      0xc15
  *(.stabstr)
- .stabstr       0x0000000000000000      0xbf1 ADC_with_dev.o
+ .stabstr       0x0000000000000000      0xc15 ADC_with_dev.o
 
 .stab.excl
  *(.stab.excl)
