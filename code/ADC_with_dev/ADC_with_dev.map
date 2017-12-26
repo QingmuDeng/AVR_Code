@@ -164,7 +164,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000      0x176
+.text           0x0000000000000000      0x170
  *(.vectors)
  .vectors       0x0000000000000000       0x7c /usr/lib/gcc/avr/4.9.2/../../../avr/lib/avr5/crtatmega16m1.o
                 0x0000000000000000                __vectors
@@ -252,22 +252,22 @@ END GROUP
                 0x00000000000000a4                . = ALIGN (0x2)
  *(.text.*)
  .text.__vector_27
-                0x00000000000000a4       0x46 ADC_with_dev.o
+                0x00000000000000a4       0x40 ADC_with_dev.o
                 0x00000000000000a4                __vector_27
  .text.init_ADC5
-                0x00000000000000ea       0x2e ADC_with_dev.o
-                0x00000000000000ea                init_ADC5
+                0x00000000000000e4       0x2e ADC_with_dev.o
+                0x00000000000000e4                init_ADC5
  .text.init_PWM1
-                0x0000000000000118       0x24 ADC_with_dev.o
-                0x0000000000000118                init_PWM1
+                0x0000000000000112       0x24 ADC_with_dev.o
+                0x0000000000000112                init_PWM1
  .text.startup.main
-                0x000000000000013c       0x36 ADC_with_dev.o
-                0x000000000000013c                main
-                0x0000000000000172                . = ALIGN (0x2)
+                0x0000000000000136       0x36 ADC_with_dev.o
+                0x0000000000000136                main
+                0x000000000000016c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000000172        0x0 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
-                0x0000000000000172                exit
-                0x0000000000000172                _exit
+ .fini9         0x000000000000016c        0x0 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
+                0x000000000000016c                exit
+                0x000000000000016c                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -286,11 +286,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000000172        0x4 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
+ .fini0         0x000000000000016c        0x4 /usr/lib/gcc/avr/4.9.2/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x0000000000000176                _etext = .
+                0x0000000000000170                _etext = .
 
-.data           0x0000000000800100        0x0 load address 0x0000000000000176
+.data           0x0000000000800100        0x0 load address 0x0000000000000170
                 0x0000000000800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -309,8 +309,8 @@ END GROUP
  COMMON         0x0000000000800100        0x2 ADC_with_dev.o
                 0x0000000000800100                reading
                 0x0000000000800102                PROVIDE (__bss_end, .)
-                0x0000000000000176                __data_load_start = LOADADDR (.data)
-                0x0000000000000176                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000000000000170                __data_load_start = LOADADDR (.data)
+                0x0000000000000170                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0000000000800102        0x0
                 0x0000000000800102                PROVIDE (__noinit_start, .)

@@ -1,4 +1,4 @@
-#define F_CPU (1000000UL)
+#define F_CPU (16000000UL)
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -6,7 +6,7 @@
 volatile uint16_t reading;
 
 ISR(ADC_vect){
-  PORTB ^= _BV(PB1);
+  PORTB |= _BV(PB1);
   reading = ADC;
   ADCSRA |= _BV(ADSC);
 }
