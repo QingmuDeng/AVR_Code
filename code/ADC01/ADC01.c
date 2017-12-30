@@ -5,7 +5,7 @@
 
 
 int main(void){
-  uint16_t reading;
+  //uint16_t reading;
 
   //setting up A1 pin
   DDRC &= ~(_BV(PC1));
@@ -23,26 +23,26 @@ int main(void){
   //Enabling 8-bit Clock with no prescaling
   TCCR0B |= _BV(CS00);
   //Enabling PD6 as PWM output using PWM Phase Correct
-  TCCR0A |= _BV(COM0A0) | _BV(WGM00);
-  TCCR0A &= ~_BV(COM0A1);
+  TCCR0A |= _BV(COM0A1) | _BV(WGM00);
+  TCCR0A &= ~_BV(COM0A0);
   //Setting PD6/OCR0A to output
-  DDRD |= _BV(PD6);
+  DDRD |= _BV(PD6) | _BV(PD7);
 
 
   for(;;){
     ADCSRA |= _BV(ADSC);
-
-    while(ADCSRA & _BV(ADSC)){
-
+    while(bit_is_set(ADCSRA, ADSC)){
+      PORTD ^= _BV(PD7);
     }
-    reading = ADC;
+
+    uint16_t reading = ADC;
     OCR0A = (uint8_t) (reading>>2);
 
-    if(!(PINB & _BV(PB1))){
-      PORTB |= _BV(PB0);
-    }else{
-      PORTB &= ~(_BV(PB0));
-    }
+    // if(!(PINB & _BV(PB1))){
+    //   PORTB |= _BV(PB0);
+    // }else{
+    //   PORTB &= ~(_BV(PB0));
+    // }
 
   }
   return 0;
