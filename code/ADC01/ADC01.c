@@ -31,7 +31,8 @@ int main(void){
 
   for(;;){
     ADCSRA |= _BV(ADSC);
-    while(bit_is_set(ADCSRA, ADSC)){
+    //equivalent of bit_is_set(ADCSRA, ADSC)
+    while((ADCSRA & _BV(ADSC)) & _BV(ADSC)){
       PORTD ^= _BV(PD7);
     }
 
