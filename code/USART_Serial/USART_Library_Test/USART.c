@@ -1,14 +1,14 @@
-#include <avr/io.h>
-#include <avr/interrupt.h>
 #include "USART.h"
 
-void Serial::init(unsigned long baud){
+void Serial_init(){
   /* USART Baud Rate 0: Calculated within <util/setbaud.h>
   This is a 12-bit register which contains the USART baud rate. The UBRR0H
   contains the four most significant bits and the UBRR0L contains the eight
   least significant bits of the USART baud rate.*/
-  #define BAUD (baud)
-  #include <util/setbaud.h>
+#ifndef BAUD
+#define BAUD (9600UL)
+#endif
+#include <util/setbaud.h>
   UBRR0H = UBRRH_VALUE;
   UBRR0L = UBRRL_VALUE;
 
@@ -24,15 +24,14 @@ void Serial::init(unsigned long baud){
 
   //USART Character Size: 8 bit
   UCSR0C |= _BV(UCSZ01) | _BV(UCSZ00);
-  _baud = baud;
 }
 
-void Serial::initInterrupt(){
+void Serial_initInterrupt(){
   /*Initial USART intterupts*/
   UCSR0B |= _BV(UDRIE0) | _BV(RXCIE0);
 }
 
-uint8_t Serial::available(){
+uint8_t Serial_available(){
   /*RXC0: USART Receive Complete
   This flag bit is SET when there are UNREAD data in the receive buffer and
   cleared when the receive buffer is empty (i.e., does not contain any unread
@@ -46,7 +45,7 @@ uint8_t Serial::available(){
   }
 }
 
-uint8_t Serial:transmitComplete(){
+uint8_t Serial_transmitComplete(){
   /*TXC0: USART Transmit Complete
   This flag bit is SET when the entire frame in the Transmit Shift Register has
   BEEN SHIFT OUT and there are no new data currently present in the transmit
@@ -61,7 +60,7 @@ uint8_t Serial:transmitComplete(){
   }
 }
 
-uint8_t Serial::bufferEmpty(){
+uint8_t Serial_bufferEmpty(){
   /*UDRE0: USART Data Register Empty
   The UDRE0 Flag indicates if the transmit buffer (UDR0) is ready to receive new
   data. If UDRE0 is ONE, the buffer is EMPTY, and therefore READY TO BE WRITTEN.
@@ -75,21 +74,21 @@ uint8_t Serial::bufferEmpty(){
   }
 }
 
-void Serial::transmitByte(uint8_t data){
-  while(!bufferEmpty());
+void Serial_transmitByte(uint8_t data){
+  while(!Serial_bufferEmpty());
   UDR0 = data;
-  while(!serialTransmitComplete());
+  while(!Serial_transmitComplete());
 }
 
-uint8_t Serial::receiveByte(){
+uint8_t Serial_receiveByte(){
   return UDR0;
 }
 
-void Serial::printString(const char myString[]){
+void Serial_printString(const char myString[]){
   /*Send a series of character over Serial*/
   uint8_t i = 0;
   while(myString[i]){
-    transmitByte((uint8_t)myString[i]);
+    Serial_transmitByte((uint8_t)myString[i]);
     i++;
   }
 }
