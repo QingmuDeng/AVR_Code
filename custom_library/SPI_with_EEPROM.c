@@ -1,20 +1,4 @@
-#define F_CPU (8000000UL)
-
-// #include <stdio.h>
-// #include <stdlib.h>
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/power.h>
-#include "USART.h"
-
-#define EEPROM_READ 0b00000011
-#define EEPROM_WRITE 0b00000010
-#define EEPROM_WRDI 0b00000100
-#define EEPROM_WREN 0b00000110
-#define EEPROM_RDSR 0b00000101
-#define EEPROM_WRSR 0b00000001
-#define SLAVE_SELECT (PORTB &= ~_BV(PB2))
-#define SLAVE_DESELECT (PORTB |= _BV(PB2))
+#include "SPI_with_EEPROM.h"
 
 void initSPI(uint8_t mode){
   //Set SCK(PB5) and MOSI(PB3) to output
@@ -38,7 +22,7 @@ void initSPI(uint8_t mode){
       SPCR |= _BV(CPOL) | _BV(2);
   }
 
-  //Master Mode, 1/16 prescaler, Enable SPI
+  //Master Mode, 1/128 prescaler, Enable SPI
   SPCR |= _BV(MSTR) | _BV(SPR1) | _BV(SPE) | _BV(SPR0);
 }
 
@@ -158,38 +142,4 @@ void EEPROM_writeString(uint16_t address, const char myString[]){
   }
   // Let EEPROM flash the bytes in
   EEPROM_writeIn();
-}
-
-int main(){
-  //Set the mcu to run at 8 MHz with the internal oscillator
-  clock_prescale_set(clock_div_1);
-  Serial_init();
-  initSPI(0);
-
-  // DDRD |= _BV(PD7);
-  // for(;;){
-  //   PORTD ^= _BV(PD7);
-  //   _delay_ms(100);
-  // }
-  char character;
-  EEPROM_writeSingleByte(0x0, (uint8_t)"");
-  uint16_t test_address = 0x1;
-  const char* myString = "Fulfill your destiny!\n";
-  for(;;){
-    // while(1){
-    //   if(Serial_available()){
-    //     character = Serial_receiveByte();
-    //     break;
-    //   }
-    // }
-    //
-    // EEPROM_writeSingleByte(test_address, (uint8_t)character);
-    // Serial_transmitByte((uint8_t)character);
-    //EEPROM_writeString(test_address, myString);
-    //EEPROM_readStringToSerial((uint16_t)0x1, (uint16_t) 16);
-    Serial_transmitByte(EEPROM_readByte(test_address));
-    test_address++;
-  }
-
-  return 0;
 }
