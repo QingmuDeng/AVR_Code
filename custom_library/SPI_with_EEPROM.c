@@ -1,6 +1,6 @@
 #include "SPI_with_EEPROM.h"
 
-void initSPI(uint8_t mode){
+void initSPI(uint8_t mode, uint8_t prescaler){
   //Set SCK(PB5) and MOSI(PB3) to output
   DDRB |= _BV(PB5) | _BV(PB3) | _BV(PB2);
   //Set MISO(PB4) and then AVR slave-select to input with internal pull-up
@@ -22,8 +22,27 @@ void initSPI(uint8_t mode){
       SPCR |= _BV(CPOL) | _BV(2);
   }
 
+  switch(prescaler){
+    case 2:
+      SPSR |= 1 << SPI2X;
+    case 4:
+      break;
+    case 8:
+      SPCR |= (1 << SPR0);
+      SPSR |= 1 << SPI2X;
+    case 16:
+      SPCR |= (1 << SPR0);
+    case 32:
+      SPSR |= (1 << SPI2X);
+      SPCR |= (1 << SPR1);
+    case 64:
+      SPCR |= (1 << SPR1);
+    case 128:
+      SPCR |= (1 << SPR0) | (1 << SPR1);
+  }
+
   //Master Mode, 1/128 prescaler, Enable SPI
-  SPCR |= _BV(MSTR) | _BV(SPR1) | _BV(SPE) | _BV(SPR0);
+  SPCR |= _BV(MSTR) | _BV(SPE);
 }
 
 void SPI_tradeByte(uint8_t byte){
@@ -111,10 +130,12 @@ void EEPROM_readStringToSerial(uint16_t address, uint16_t numByteToRead){
   SLAVE_SELECT;
   // Send EEPROM READ Instruction
   SPI_tradeByte(EEPROM_READ);
-  // Store the byte in the string arrary as char
-  while(address < (address+numByteToRead)){
+  // Send the address to read from
+  EEPROM_address(address);
+  uint16_t address_count;
+  uint16_t address_stop = (numByteToRead+address);
+  for(address_count = address; address_count < address_stop; address_count++){
     // Send the address to read from
-    EEPROM_address(address);
     SPI_tradeByte(0);
     Serial_transmitByte(SPDR);
     address++;
@@ -142,4 +163,21 @@ void EEPROM_writeString(uint16_t address, const char myString[]){
   }
   // Let EEPROM flash the bytes in
   EEPROM_writeIn();
+}
+
+void EEPROM_clearAll(){
+  uint8_t byte_count;
+  uint16_t current_address = 0;
+  Serial_printString("Clearing EEPROM now begins. This might take a moment...\n");
+  while(current_address <= EEPROM_MAX_BYTE){
+    EEPROM_writeEnable();
+    SLAVE_SELECT;
+    EEPROM_address(current_address);
+    for(byte_count = 0; byte_count < 64; byte_count++){
+      SPI_tradeByte(0);
+    }
+    EEPROM_writeIn();
+    current_address += 64;
+  }
+  Serial_printString("Clearing EEPROM successful...\n");
 }
