@@ -1,2 +1,3 @@
 # AVR_Code
-Josh's own AVR code
+
+Various AVR demo code written for [Atmega328](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-42735-8-bit-AVR-Microcontroller-ATmega328-328P_Datasheet.pdf) and/or [Olin Electric Motorsports](https://github.com/olin-electric-motorsports) Firmware Dev Board ([Atmega16m1](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8209-8-bit%20AVR%20ATmega16M1-32M1-64M1_Summary.pdf)). This repository currently include custom libraries for AVR interfacing with the following serial communication protocols: Universal Synchronous and Asynchronous Receiver-Transmitter (USART), Serial Peripheral Interface (SPI), and Two-Wire Interface (TWI, still in testing development).
