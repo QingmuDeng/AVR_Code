@@ -18,5 +18,10 @@ uint8_t Serial_bufferEmpty();
 void Serial_transmitByte(uint8_t data);
 uint8_t Serial_receiveByte();
 void Serial_printString(const char myString[]);
+void printDecimalByte(uint8_t byte);
+char nibbleToHexCharacter(uint8_t nibble);
+void printHexByte(uint8_t byte);
+
+
 
 #endif

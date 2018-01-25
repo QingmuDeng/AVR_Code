@@ -92,3 +92,29 @@ void Serial_printString(const char myString[]){
     i++;
   }
 }
+
+void printDecimalByte(uint8_t byte) {
+  // convert a byte into decimal string and print it through Serial
+  Serial_transmitByte('0' + (byte / 100));                        /* Hundreds */
+  Serial_transmitByte('0' + ((byte / 10) % 10));                      /* Tens */
+  Serial_transmitByte('0' + (byte % 10));                             /* Ones */
+}
+
+char nibbleToHexCharacter(uint8_t nibble) {
+  // Converts 4 bits into hexadecimal
+  if (nibble < 10) {
+    return ('0' + nibble);
+  }
+  else {
+    return ('0' + nibble - 10);
+  }
+}
+
+void printHexByte(uint8_t byte) {
+  // Print a byte in its hexadecimal format
+  uint8_t nibble;
+  nibble = (byte & 0b11110000) >> 4;
+  Serial_transmitByte(nibbleToHexCharacter(nibble));
+  nibble = byte & 0b00001111;
+  Serial_transmitByte(nibbleToHexCharacter(nibble));
+}
